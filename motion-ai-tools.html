@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Motion AI Tools</title>
+<style>
+:root{--bg:#050b1f;--p:#0b1634;--p2:#111f45;--b:#1d3a7a;--ac:#3b82f6;--t:#e8eeff;--m:#8fa3d6;--g:0 0 18px rgba(59,130,246,.55)}
+*{box-sizing:border-box;margin:0}
+body{background:radial-gradient(circle at 50% -10%,#10265f,var(--bg) 60%);color:var(--t);font:15px/1.5 system-ui,sans-serif;min-height:100vh}
+button,select,input,textarea{font:inherit;color:var(--t)}
+.btn{background:linear-gradient(135deg,#2563eb,#3b82f6);border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer;box-shadow:var(--g)}
+.btn.s{background:var(--p2);border:1px solid var(--b);box-shadow:none;padding:8px 12px;font-size:13px}
+.btn:disabled{opacity:.5}
+#home{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px}
+#home h1{font-size:clamp(28px,6vw,52px);text-shadow:var(--g)}
+#home p{color:var(--m);max-width:480px}
+#app{display:none;min-height:100vh}
+aside{width:240px;background:var(--p);border-right:1px solid var(--b);padding:18px 12px;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;gap:6px}
+aside h2{font-size:18px;color:var(--ac);text-shadow:var(--g);margin-bottom:10px;padding:0 8px}
+.nv{background:none;border:1px solid transparent;border-radius:10px;padding:11px 12px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--m)}
+.nv.on{background:var(--p2);border-color:var(--ac);color:var(--t);box-shadow:var(--g)}
+.nw{background:var(--ac);color:#fff;font-size:10px;border-radius:6px;padding:2px 6px;font-weight:700}
+main{margin-left:240px;padding:24px;max-width:1000px}
+section{display:none}section.on{display:block}
+h3{font-size:22px;margin-bottom:4px}.sub{color:var(--m);margin-bottom:16px}
+.card{background:var(--p);border:1px solid var(--b);border-radius:16px;padding:16px;margin-bottom:16px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label.l{font-size:12px;color:var(--m);display:block;margin-bottom:3px}
+select,input[type=text],input[type=password],textarea{width:100%;background:var(--p2);border:1px solid var(--b);border-radius:10px;padding:10px}
+textarea{min-height:90px;resize:vertical}
+.up{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:140px;border:2px dashed var(--b);border-radius:14px;cursor:pointer;color:var(--m);text-align:center;padding:8px;overflow:hidden;background:var(--p2)}
+.up img,.up video{max-width:100%;max-height:170px;border-radius:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{display:flex;gap:8px;margin:10px 0}
+.seg button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--b);background:var(--p2);cursor:pointer}
+.seg button.on{border-color:var(--ac);box-shadow:var(--g)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.it{background:var(--p2);border:1px solid var(--b);border-radius:12px;overflow:hidden;font-size:12px}
+.it .im{aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:var(--m);background:#0a1330}
+.it img{width:100%;height:100%;object-fit:cover}
+.it div.c{padding:6px 8px;display:flex;justify-content:space-between;gap:4px;align-items:center}
+.ld{display:none;align-items:center;gap:10px;color:var(--m);margin:10px 0}
+.ld.on{display:flex}
+.sp{width:20px;height:20px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:r 1s linear infinite;flex:none}
+@keyframes r{to{transform:rotate(360deg)}}
+pre{white-space:pre-wrap;background:#0a1330;border:1px solid var(--b);border-radius:10px;padding:12px;font:13px/1.5 ui-monospace,monospace;margin:8px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.note{font-size:13px;color:var(--m);border-left:3px solid var(--ac);padding-left:10px;margin:10px 0}
+.err{color:#ff8b8b;font-size:13px;margin-top:6px}
+#top{display:none}
+@media(max-width:780px){
+aside{position:static;width:100%;flex-direction:row;overflow-x:auto;padding:10px;border:0;border-bottom:1px solid var(--b)}
+aside h2{display:none}.nv{white-space:nowrap;gap:8px}
+main{margin:0;padding:14px}.two{grid-template-columns:1fr}}
+</style></head><body>
+
+<div id="home">
+<h1>Selamat Datang di Motion AI Tools</h1>
+<p>Suite AI visual untuk storyboard, karakter konsisten, dan konten profesional</p>
+<button class="btn" onclick="startApp()">MULAI STUDIO</button>
+</div>
+
+<div id="app">
+<aside>
+<h2>Motion AI Tools</h2>
+<button class="nv on" data-s="cb">Character Builder <span class="nw">NEW</span></button>
+<button class="nv" data-s="ugc">UGC Natural</button>
+<button class="nv" data-s="sb">Storyboard Builder</button>
+<button class="nv" data-s="pov">POV Hand Review</button>
+<button class="nv" data-s="mt">Motion Transfer <span class="nw">NEW</span></button>
+</aside>
+<main>
+<div class="card"><label class="l">API Key Gemini (kosongkan jika dijalankan di Gemini Canvas / AI Studio yang sudah menyediakan key)</label>
+<input type="password" id="key" placeholder="AIza..."></div>
+
+<section id="cb" class="on">
+<h3>Character Builder</h3><p class="sub">Buat Base Model karakter fiktif yang dipakai semua fitur lain.</p>
+<div class="card"><div class="fg" id="cbf"></div>
+<div class="row"><button class="btn" id="cbb" onclick="makeBase()">Buat Base Model</button></div>
+<div class="ld" id="cbl"><div class="sp"></div>Membuat karakter...</div><div class="err" id="cbe"></div></div>
+<div class="card" id="cbr" style="display:none"><div class="two"><div class="it"><div class="im"><img id="cbi"></div></div>
+<div><p><b>Base Model siap.</b> Gambar ini otomatis jadi referensi di UGC Natural, Storyboard, POV, dan Motion Transfer.</p>
+<div class="row"><button class="btn" onclick="saveBase()">Simpan sebagai Base Model</button><button class="btn s" onclick="dl(base,'base-model')">Unduh</button></div><p class="note" id="cbs"></p></div></div></div>
+</section>
+
+<section id="ugc">
+<h3>UGC Natural</h3><p class="sub">Foto produk jadi grid pose dan prompt video gaya kasual seperti rekaman HP.</p>
+<div class="card"><div class="two">
+<div><label class="l">Kotak 1: Base Model</label><div class="up" id="ub">Belum ada Base Model. Buat di Character Builder.</div></div>
+<div><label class="l">Kotak 2: Foto Produk</label><label class="up" for="ugf" id="up1">Tap untuk upload</label><input type="file" id="ugf" accept="image/*" hidden></div></div>
+<label class="l" style="margin-top:10px">Durasi video</label>
+<div class="seg" id="dur"><button data-d="12">12 detik</button><button data-d="14" class="on">14 detik</button></div>
+<button class="btn" id="ugb" onclick="runUgc()">Generate</button>
+<div class="ld" id="ugl"><div class="sp"></div><span id="ugt">Memproses...</span></div><div class="err" id="uge"></div></div>
+<div class="card" id="ugp" style="display:none"><b>Prompt Video</b>
+<p class="note">Klip 1 dan Klip 2 dibuat berurutan di generator video (Veo, Kling, dsb).</p>
+<pre id="k1"></pre><pre id="k2"></pre>
+<div class="row"><button class="btn s" onclick="cp('k1')">Copy Prompt Klip 1</button><button class="btn s" onclick="cp('k2')">Copy Prompt Klip 2</button><button class="btn s" onclick="cp('k1','k2')">Copy Semua</button></div></div>
+<div class="card" id="ugg" style="display:none"><b>Grid 18 Variasi Pose</b><div class="grid" id="gr" style="margin-top:10px"></div></div>
+</section>
+
+<section id="sb">
+<h3>Storyboard Builder</h3><p class="sub">Dari ide cerita jadi 6 panel adegan.</p>
+<div class="card"><label class="l">Ide cerita</label><textarea id="sbi" placeholder="Contoh: Seorang barista muda membuka kedai kopi pertamanya..."></textarea>
+<div class="row"><button class="btn" id="sbb" onclick="runSb()">Buat 6 Panel</button></div>
+<div class="ld" id="sbl"><div class="sp"></div><span id="sbt">Memproses...</span></div><div class="err" id="sbe"></div></div>
+<div id="sbo" class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))"></div>
+</section>
+
+<section id="pov">
+<h3>POV Hand Review</h3><p class="sub">Sudut pandang orang pertama: tangan memegang produk.</p>
+<div class="card"><div class="two"><div><label class="l">Foto Produk</label><label class="up" for="pvf" id="up2">Tap untuk upload</label><input type="file" id="pvf" accept="image/*" hidden></div>
+<div><label class="l">Catatan (opsional)</label><textarea id="pvn" placeholder="Nama produk, latar, suasana..."></textarea></div></div>
+<div class="row"><button class="btn" id="pvb" onclick="runPov()">Generate POV</button></div>
+<div class="ld" id="pvl"><div class="sp"></div>Memproses...</div><div class="err" id="pve"></div></div>
+<div class="card" id="pvr" style="display:none"><div class="two"><div class="it"><div class="im"><img id="pvi"></div></div><div><b>Prompt</b><pre id="pvp"></pre><div class="row"><button class="btn s" onclick="cp('pvp')">Copy Prompt</button><button class="btn s" onclick="dl(pvimg,'pov')">Unduh Gambar</button></div></div></div></div>
+</section>
+
+<section id="mt">
+<h3>Motion Transfer</h3><p class="sub">Upload foto karakter + video referensi gerakan. Aplikasi membaca gerakan dari video lalu menyusun prompt dan paket siap pakai.</p>
+<div class="card"><div class="two">
+<div><label class="l">Foto karakter / produk</label><label class="up" for="mif" id="up3">Tap untuk upload foto</label><input type="file" id="mif" accept="image/*" hidden></div>
+<div><label class="l">Video referensi gerakan</label><label class="up" for="mvf" id="up4">Tap untuk upload video</label><input type="file" id="mvf" accept="video/*" hidden></div></div>
+<div class="row"><button class="btn" id="mtb" onclick="runMt()">Analisis Gerakan</button></div>
+<div class="ld" id="mtl"><div class="sp"></div>Membaca gerakan video...</div><div class="err" id="mte"></div></div>
+<div class="card" id="mtr" style="display:none"><b>Prompt Gerakan</b><pre id="mtp"></pre>
+<div class="row"><button class="btn s" onclick="cp('mtp')">Copy Prompt</button></div>
+<p class="note">Gemini hanya membaca dan menjelaskan gerakan. Untuk benar-benar memindahkan gerakan ke foto, unggah foto + video referensi yang sama ke alat motion control seperti Kling Motion Control, Runway Act-Two, atau Wan Animate. Untuk animasi foto tanpa video referensi, pakai prompt ini di Veo (image-to-video).</p></div>
+</section>
+</main></div>
+
+<script>
+const $=id=>document.getElementById(id);
+let miF=null,base=null,prod=null,povP=null,miP=null,miV=null,pvimg=null,dur=14;
+try{base=localStorage.getItem('mat_base')||null}catch(e){}
+const OPT={
+gender:['Perempuan','Laki-laki'],tinggi:['150 cm','160 cm','170 cm','180 cm'],
+kulit:['Putih','Kuning langsat','Sawo matang','Cokelat gelap'],
+suku:['Jawa','Sunda','Minang','Batak','Bugis','Betawi','Bali','Melayu'],
+wajah:['Oval','Bulat','Persegi','Hati','Lonjong'],
+gaya:['Hijab pashmina','Hijab segi empat','Hijab syar\'i','Rambut panjang lurus','Rambut pendek','Rambut ikal'],
+busana:['Kasual modern','Gamis','Kemeja formal','Streetwear','Kaos dan jeans','Batik modern'],
+ekspresi:['Tersenyum ramah','Santai','Percaya diri','Ceria','Tenang'],
+latar:['Kamar estetik','Kafe','Taman kota','Studio polos','Ruang tamu','Jalanan kota']};
+const LBL={gender:'Gender',tinggi:'Tinggi badan',kulit:'Warna kulit',suku:'Suku',wajah:'Bentuk wajah',gaya:'Gaya hijab/rambut',busana:'Gaya busana',ekspresi:'Ekspresi',latar:'Latar'};
+$('cbf').innerHTML=Object.keys(OPT).map(k=>`<div><label class="l">${LBL[k]}</label><select id="f_${k}">${OPT[k].map(o=>`<option>${o}</option>`).join('')}</select></div>`).join('');
+const POSES=['Tampak depan, berdiri','High angle','Low angle','Close-up wajah','Berjalan','Memegang produk','Menunjuk produk','Duduk santai','Tampak samping','Dari belakang menoleh','Selfie','Setengah badan','Full body','Tertawa','Membuka produk','Mencoba produk','Mengangkat produk','Pose jempol'];
+function startApp(){$('home').style.display='none';$('app').style.display='block';refresh()}
+document.querySelectorAll('.nv').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nv').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.s));refresh()});
+document.querySelectorAll('#dur button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dur button').forEach(x=>x.classList.remove('on'));b.classList.add('on');dur=+b.dataset.d});
+function refresh(){$('ub').innerHTML=base?`<img src="${base}">`:'Belum ada Base Model. Buat di Character Builder.'}
+function load(inp,box,cb,video){inp.onchange=()=>{const f=inp.files[0];if(!f)return;
+ if(video){miF=f;const u=URL.createObjectURL(f);box.innerHTML=`<video src="${u}" controls muted playsinline></video><small>${f.name}</small>`;cb(u);return}
+ const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const u=c.toDataURL('image/jpeg',.88);box.innerHTML=`<img src="${u}">`;cb(u)};im.src=r.result};r.readAsDataURL(f)}}
+load($('ugf'),$('up1'),u=>prod=u);load($('pvf'),$('up2'),u=>povP=u);load($('mif'),$('up3'),u=>miP=u);load($('mvf'),$('up4'),u=>miV=u,true);
+const part=d=>({inlineData:{mimeType:d.slice(5,d.indexOf(';')),data:d.split(',')[1]}});
+async function api(model,parts,img){
+ const k=$('key').value.trim();
+ const body={contents:[{parts}]};if(img)body.generationConfig={responseModalities:['IMAGE','TEXT']};
+ let r;try{r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`+(k?`?key=${k}`:''),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}
+ catch(e){throw new Error(k?'Koneksi ke Gemini gagal. Cek internet, atau key mungkin tidak valid / permintaan terlalu besar.':'Koneksi ke Gemini gagal. Isi API Key Gemini di kolom paling atas (halaman ini tidak punya key otomatis di luar Gemini Canvas / AI Studio).')}
+ const j=await r.json();if(!r.ok)throw new Error(j.error?.message||'Permintaan gagal');
+ return j.candidates?.[0]?.content?.parts||[]}
+async function txt(p,parts=[]){const o=await api('gemini-2.5-flash',[...parts,{text:p}]);return o.map(x=>x.text||'').join('')}
+async function img(p,refs=[]){const o=await api('gemini-2.5-flash-image',[...refs.map(part),{text:p}],true);const x=o.find(y=>y.inlineData);if(!x)throw new Error('Gambar tidak dihasilkan');return`data:${x.inlineData.mimeType};base64,${x.inlineData.data}`}
+const jparse=t=>JSON.parse(t.replace(/```json|```/g,'').trim());
+function busy(p,on,msg){$(p+'l').classList.toggle('on',on);$(p+'b').disabled=on;if(msg&&$(p+'t'))$(p+'t').textContent=msg;if(on)$(p+'e').textContent=''}
+function dl(u,n){if(!u)return;const a=document.createElement('a');a.href=u;a.download=n+'.png';document.body.appendChild(a);a.click();a.remove()}
+async function cp(...ids){const t=ids.map(i=>$(i).textContent).join('\n\n');try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}}
+async function makeBase(){busy('cb',true);
+ const v=k=>$('f_'+k).value;
+ try{const u=await img(`Foto potret realistis karakter fiktif (bukan orang nyata): ${v('gender')} Indonesia suku ${v('suku')}, tinggi ${v('tinggi')}, kulit ${v('kulit')}, wajah ${v('wajah')}, ${v('gaya')}, busana ${v('busana')}, ekspresi ${v('ekspresi')}, latar ${v('latar')}. Seluruh badan terlihat, pencahayaan natural, resolusi tinggi.`);
+  $('cbi').src=u;$('cbr').style.display='block';window._tmp=u;$('cbs').textContent=''}catch(e){$('cbe').textContent=e.message}busy('cb',false)}
+function saveBase(){base=window._tmp;try{localStorage.setItem('mat_base',base)}catch(e){}$('cbs').textContent='Tersimpan sebagai Base Model.';refresh()}
+async function runUgc(){
+ if(!base){$('uge').textContent='Buat dan simpan Base Model dulu di Character Builder.';return}
+ if(!prod){$('uge').textContent='Upload foto produk dulu.';return}
+ busy('ug',true,'Menyusun prompt video...');$('ugp').style.display='none';
+ try{
+  const a=Math.round(dur/2),b=dur-a;
+  const t=await txt(`Lihat foto produk ini. Tulis prompt video UGC natural (kasual, otentik, seperti direkam HP) untuk 2 klip berurutan, total ${dur} detik. Jawab HANYA JSON: {"k1":"...","k2":"..."}.
+k1 (${a} detik): pembukaan, karakter memperkenalkan atau memegang produk, kamera bergerak pelan.
+k2 (${b} detik): close-up detail produk, karakter menunjukkan manfaat, penutup dengan ajakan beli (CTA). k2 HARUS diawali "Lanjutan dari klip 1, karakter, pakaian, dan lokasi sama persis."
+Setiap klip berisi baris berlabel: Aksi adegan, Gerakan kamera, Gaya (UGC natural), Pencahayaan, Dialog (bahasa Indonesia, kalimat natural).`,[part(prod)]);
+  const j=jparse(t);$('k1').textContent='KLIP 1\n'+j.k1;$('k2').textContent='KLIP 2\n'+j.k2;$('ugp').style.display='block';
+  $('ugg').style.display='block';$('gr').innerHTML=POSES.map((p,i)=>`<div class="it"><div class="im" id="g${i}"><div class="sp"></div></div><div class="c"><span>${p}</span><button class="btn s" style="padding:3px 7px" onclick="dl(document.querySelector('#g${i} img')?.src,'pose-${i+1}')">⬇</button></div></div>`).join('');
+  let done=0;
+  for(let i=0;i<POSES.length;i+=3){
+   await Promise.all(POSES.slice(i,i+3).map(async(p,k)=>{const n=i+k;
+    try{const u=await img(`Gunakan karakter pada gambar referensi pertama (wajah dan pakaian harus sama persis). Karakter bersama produk dari gambar referensi kedua. Pose/angle: ${p}. Gaya foto UGC natural seperti direkam HP, pencahayaan natural.`,[base,prod]);$('g'+n).innerHTML=`<img src="${u}">`}
+    catch(e){$('g'+n).textContent='Gagal'}done++;$('ugt').textContent=`Membuat gambar ${done}/18...`}))}
+ }catch(e){$('uge').textContent=e.message}busy('ug',false)}
+async function runSb(){
+ const idea=$('sbi').value.trim();if(!idea){$('sbe').textContent='Isi ide cerita dulu.';return}
+ if(!base){$('sbe').textContent='Buat dan simpan Base Model dulu.';return}
+ busy('sb',true,'Menyusun panel...');$('sbo').innerHTML='';
+ try{const j=jparse(await txt(`Ide cerita: ${idea}\nBuat storyboard 6 panel. Jawab HANYA JSON array 6 objek: {"deskripsi":"...","sudut":"sudut kamera","prompt":"prompt gambar dalam bahasa Indonesia, karakter sama dengan referensi"}.`));
+  $('sbo').innerHTML=j.map((p,i)=>`<div class="it"><div class="im" id="s${i}"><div class="sp"></div></div><div class="c" style="display:block"><b>Panel ${i+1}</b> · ${p.sudut}<br>${p.deskripsi}<br><div class="row"><button class="btn s" onclick="dl(document.querySelector('#s${i} img')?.src,'panel-${i+1}')">Unduh</button></div></div></div>`).join('');
+  let d=0;for(let i=0;i<6;i+=3)await Promise.all(j.slice(i,i+3).map(async(p,k)=>{const n=i+k;try{const u=await img(`Karakter sama persis dengan gambar referensi. Adegan: ${p.deskripsi}. Sudut kamera: ${p.sudut}. ${p.prompt}. Gaya sinematik.`,[base]);$('s'+n).innerHTML=`<img src="${u}">`}catch(e){$('s'+n).textContent='Gagal'}$('sbt').textContent=`Membuat panel ${++d}/6...`}))
+ }catch(e){$('sbe').textContent=e.message}busy('sb',false)}
+async function runPov(){
+ if(!povP){$('pve').textContent='Upload foto produk dulu.';return}
+ busy('pv',true);
+ try{const note=$('pvn').value;
+  const p=await txt(`Lihat produk ini. Tulis satu prompt dalam bahasa Indonesia untuk gambar sudut pandang orang pertama: tangan memegang produk, seperti sedang review. ${note}`,[part(povP)]);
+  $('pvp').textContent=p;
+  pvimg=await img(`Foto POV orang pertama: tangan memegang produk dari referensi, seperti sedang review. ${p}`,base?[povP,base]:[povP]);
+  $('pvi').src=pvimg;$('pvr').style.display='block'}catch(e){$('pve').textContent=e.message}busy('pv',false)}
+async function frames(url,n){
+ const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=url;
+ await new Promise((ok,no)=>{v.onloadedmetadata=ok;v.onerror=()=>no(new Error('Video tidak bisa dibaca browser. Coba format MP4 (H.264) atau WebM.'))});
+ const d=v.duration||1,s=Math.min(1,512/Math.max(v.videoWidth||512,v.videoHeight||512)),c=document.createElement('canvas');
+ c.width=(v.videoWidth||512)*s;c.height=(v.videoHeight||512)*s;const x=c.getContext('2d'),out=[];
+ for(let i=0;i<n;i++){await new Promise(ok=>{v.onseeked=ok;v.currentTime=d*(i+.5)/n});x.drawImage(v,0,0,c.width,c.height);out.push(c.toDataURL('image/jpeg',.8))}
+ out.dur=d.toFixed(1);return out}
+async function runMt(){
+ if(!miV){$('mte').textContent='Upload video referensi dulu.';return}
+ busy('mt',true);
+ try{let parts,info;
+  try{const fr=await frames(miV,8);parts=fr.map(part);info=`Ini ${fr.length} frame berurutan dari sebuah video berdurasi ${fr.dur} detik.`}
+  catch(e){if(!miF||miF.size>14*1024*1024)throw new Error('Browser tidak bisa membaca video ini dan ukurannya di atas 14 MB. Potong video jadi lebih pendek (maks 14 MB) atau ubah ke MP4 H.264, lalu coba lagi.');
+   const d=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=()=>no(new Error('Gagal membaca file'));r.readAsDataURL(miF)});
+   parts=[{inlineData:{mimeType:miF.type||'video/mp4',data:d.split(',')[1]}}];info='Ini sebuah video.'}
+  const p=await txt(`${info} Analisis gerakannya (gerakan tubuh, tangan, ekspresi, ritme, gerakan kamera). Tulis prompt dalam bahasa Indonesia yang menjelaskan gerakan itu langkah demi langkah per detik, agar bisa diterapkan pada karakter ${miP?'di foto':'lain'} di generator video. Jangan menyebut identitas orang di video.`,parts);
+  $('mtp').textContent=p;$('mtr').style.display='block'}catch(e){$('mte').textContent=e.message}busy('mt',false)}
+</script></body></html>
